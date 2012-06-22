@@ -60,6 +60,36 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
+        <configuration>
+          <filesets>
+          <fileset>
+              <directory>${basedir}</directory>
+              <excludes>
+                <exclude>.git/**</exclude>
+                <exclude>.gitignore</exclude>
+              </excludes>
+              <includes>
+                <include>*.db</include>
+                <include>*.log</include>
+              </includes>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/gen/main/java</directory>
+              <excludes>
+                <exclude>.git/**</exclude>
+                <exclude>.gitignore</exclude>
+              </excludes>
+              <includes>
+                <include>*/**</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.5.1</version>
         <configuration>
