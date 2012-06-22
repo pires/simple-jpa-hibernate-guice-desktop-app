@@ -1,4 +1,4 @@
-package com.github.pires.example.module;
+package com.github.pires.example.test.module;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -8,7 +8,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
-public class PersistenceModule extends AbstractModule {
+public class PersistenceTestModule extends AbstractModule {
 
 	private static final ThreadLocal<EntityManager> ENTITY_MANAGER_CACHE = new ThreadLocal<EntityManager>();
 
@@ -18,7 +18,7 @@ public class PersistenceModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public EntityManagerFactory provideEntityManagerFactory() {
-		return Persistence.createEntityManagerFactory("examplePU");
+		return Persistence.createEntityManagerFactory("testPU");
 	}
 
 	@Provides

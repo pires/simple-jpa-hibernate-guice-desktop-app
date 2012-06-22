@@ -9,13 +9,12 @@
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     
     <properties>
-
       <!-- SQL stuff -->
-      <property name="hibernate.connection.url" value="jdbc:h2:testdb"/>
+      <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-      <property name="hibernate.connection.usename" value="sa"/>
-      <property name="hibernate.connection.password" value=""/>
-      <property name="hibernate.default_schema" value="testdb" />
+      <property name="hibernate.connection.url" value="jdbc:h2:testdb"/>
+      <property name="hibernate.connection.username" value="sa"/>
+      <property name="hibernate.connection.password" value="secret"/>
       <property name="hibernate.hbm2ddl.auto" value="create" />
       <property name="hibernate.listeners.envers.autoRegister" value="false" />
       <property name="hibernate.show_sql" value="true" />
@@ -23,7 +22,6 @@
       <!-- Performance tuning -->
       <property name="hibernate.default_batch_fetch_size" value="8" />
       <property name="hibernate.max_fetch_depth" value="3" />
-      <property name="hibernate.connection.pool_size" value="1" />
 
       <!-- Disable the second-level cache -->
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />
