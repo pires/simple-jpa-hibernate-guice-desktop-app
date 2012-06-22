@@ -12,3 +12,15 @@ A simple proof-of-concept of a desktop Java application with database access usi
 ```
 mvn clean test
 ```
+
+## Build runnable JAR ##
+
+```
+mvn clean package
+```
+
+## Run ##
+
+```
+java -jar PATH/TO/simple-jpa-hibernate-guice-0.1.jar
+```
