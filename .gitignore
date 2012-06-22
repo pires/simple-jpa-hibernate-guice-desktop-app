@@ -3,6 +3,7 @@
 target
 .project
 .classpath
+*.db
 
 # Package Files #
 *.jar
