@@ -1,29 +1,31 @@
 package com.github.pires.example.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import com.github.pires.example.model.Person;
+import com.github.pires.example.model.Person_;
 import com.google.inject.Inject;
 
-public class PersonDao {
-
-	protected EntityManager em;
+public class PersonDao extends AbstractDao<Person> {
 
 	@Inject
 	public PersonDao(EntityManager entityManager) {
-		this.em = entityManager;
-	}
-
-	public void create(Person person) {
-		em.getTransaction().begin();
-		em.persist(person);
-		em.getTransaction().commit();
+		super(entityManager, Person.class);
 	}
 
 	public Person getByName(String name) {
-		return (Person) em
-		    .createQuery("SELECT person FROM Person person WHERE person.name=:name")
-		    .setParameter("name", name).getSingleResult();
+		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Person> cq = cb.createQuery(Person.class);
+		Root<Person> person = cq.from(Person.class);
+
+		Predicate cond1 = cb.equal(person.get(Person_.name), name);
+		cq.where(cond1);
+
+		return getEntityManager().createQuery(cq).getSingleResult();
 	}
 
 }
