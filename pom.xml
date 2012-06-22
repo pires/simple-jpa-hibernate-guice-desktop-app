@@ -6,6 +6,7 @@
   <groupId>com.github.pires</groupId>
   <artifactId>simple-jpa-hibernate-guice</artifactId>
   <version>0.1</version>
+  
   <name>Simple JPA + Hibernate + Guice project</name>
   <inceptionYear>2012</inceptionYear>
 
@@ -20,7 +21,6 @@
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.0-api</artifactId>
       <version>1.0.1.Final</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -49,11 +49,6 @@
       <version>${hibernate.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>12.0</version>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.10</version>
@@ -61,5 +56,61 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <compilerArgument>-proc:none</compilerArgument>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <id>enforce-java</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>[1.6,1.7]</version>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <minimizeJar>false</minimizeJar>
+              <transformers>
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>com.github.pires.example.ExampleMain</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
