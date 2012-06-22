@@ -1,9 +1,11 @@
 *.class
 .settings
-target
 .project
 .classpath
 *.db
+
+# Folders #
+target
 
 # Package Files #
 *.jar
