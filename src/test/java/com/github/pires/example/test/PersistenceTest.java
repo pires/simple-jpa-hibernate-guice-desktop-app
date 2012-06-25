@@ -5,17 +5,23 @@ import java.sql.SQLException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.github.pires.example.ApplicationInitializer;
 import com.github.pires.example.dao.PersonDao;
 import com.github.pires.example.model.Person;
-import com.github.pires.example.test.module.PersistenceTestModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.persist.jpa.JpaPersistModule;
 
 public class PersistenceTest {
+
+	private static final String TEST_PU_NAME = "testPU";
+
 	@Test
 	public void testDb() throws SQLException {
 		// inject stuff
-		Injector injector = Guice.createInjector(new PersistenceTestModule());
+		Injector injector = Guice
+		    .createInjector(new JpaPersistModule(TEST_PU_NAME));
+		injector.getInstance(ApplicationInitializer.class);
 		PersonDao personDao = injector.getInstance(PersonDao.class);
 
 		// persist people
@@ -38,5 +44,5 @@ public class PersistenceTest {
 		Assert.assertEquals(p2.getId(), retrieved.getId());
 		Assert.assertEquals(p2.getName(), retrieved.getName());
 	}
-	
+
 }

@@ -7,20 +7,23 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 
+import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
+
 /**
  * Abstract Data-Access Object class to be implemented by all DAO's.
  */
 public abstract class AbstractDao<T> {
 	protected Class<T> entityClass;
 
+	@Inject
 	private EntityManager em;
 
-	public AbstractDao(EntityManager em, Class<T> entityClass) {
-		this.em = em;
+	public AbstractDao(Class<T> entityClass) {
 		this.entityClass = entityClass;
 	}
 
-	public EntityManager getEntityManager() {
+	protected EntityManager getEntityManager() {
 		return this.em;
 	}
 
@@ -37,18 +40,17 @@ public abstract class AbstractDao<T> {
 		return m.entity(entityClass);
 	}
 
+	@Transactional
 	public void create(T entity) {
-		em.getTransaction().begin();
 		getEntityManager().persist(entity);
-		em.getTransaction().commit();
 	}
 
+	@Transactional
 	public void update(T entity) {
-		em.getTransaction().begin();
 		getEntityManager().merge(entity);
-		em.getTransaction().commit();
 	}
 
+	@Transactional
 	public void remove(Long entityId) {
 		T entity = find(entityId);
 
@@ -56,10 +58,9 @@ public abstract class AbstractDao<T> {
 			remove(entity);
 	}
 
+	@Transactional
 	public void remove(T entity) {
-		em.getTransaction().begin();
 		getEntityManager().remove(getEntityManager().merge(entity));
-		em.getTransaction().commit();
 	}
 
 	public T find(Object id) {

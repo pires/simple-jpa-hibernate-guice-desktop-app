@@ -15,7 +15,7 @@
       <property name="hibernate.connection.url" value="jdbc:h2:testdb"/>
       <property name="hibernate.connection.username" value="sa"/>
       <property name="hibernate.connection.password" value="secret"/>
-      <property name="hibernate.hbm2ddl.auto" value="create" />
+      <property name="hibernate.hbm2ddl.auto" value="update" />
       <property name="hibernate.listeners.envers.autoRegister" value="false" />
       <property name="hibernate.show_sql" value="true" />
 

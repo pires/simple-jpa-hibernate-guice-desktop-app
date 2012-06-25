@@ -9,17 +9,22 @@ import com.github.pires.example.model.Person;
 import com.github.pires.example.module.PersistenceModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.persist.jpa.JpaPersistModule;
 
 public class ExampleMain {
 
 	private static final Logger logger = Logger.getLogger(ExampleMain.class
 	    .getName());
 
+	public static final String PU_NAME = "examplePU";
+
 	private static PersonDao personDao;
 
 	public static final void main(String... args) {
 		// inject stuff
-		Injector injector = Guice.createInjector(new PersistenceModule());
+		Injector injector = Guice.createInjector(new PersistenceModule(),
+		    new JpaPersistModule(PU_NAME));
+		injector.getInstance(ApplicationInitializer.class);
 		personDao = injector.getInstance(PersonDao.class);
 
 		try {
@@ -32,8 +37,9 @@ public class ExampleMain {
 		logger.log(Level.INFO, "Querying DB for person with name Person 2..");
 		// retrieve one person from the persisted people
 		Person retrieved = personDao.getByName("Person 2");
-
 		logger.log(Level.INFO, "Retrieved " + retrieved.getName());
+
+		injector.getInstance(OtherExample.class).run();
 	}
 
 	private static void populateDb() throws SQLException {

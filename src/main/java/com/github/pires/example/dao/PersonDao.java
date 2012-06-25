@@ -1,6 +1,5 @@
 package com.github.pires.example.dao;
 
-import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -8,13 +7,11 @@ import javax.persistence.criteria.Root;
 
 import com.github.pires.example.model.Person;
 import com.github.pires.example.model.Person_;
-import com.google.inject.Inject;
 
 public class PersonDao extends AbstractDao<Person> {
 
-	@Inject
-	public PersonDao(EntityManager entityManager) {
-		super(entityManager, Person.class);
+	public PersonDao() {
+		super(Person.class);
 	}
 
 	public Person getByName(String name) {
