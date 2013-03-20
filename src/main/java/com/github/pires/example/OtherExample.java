@@ -6,24 +6,20 @@ import java.util.logging.Logger;
 import com.github.pires.example.dao.PersonDao;
 import com.github.pires.example.model.Person;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 
 public class OtherExample {
 
 	private static final Logger logger = Logger.getLogger(OtherExample.class
 	    .getName());
 
-	private final Injector injector;
+	private final PersonDao personDao;
 
 	@Inject
-	public OtherExample(Injector injector) {
-		this.injector = injector;
+	public OtherExample(PersonDao personDao) {
+		this.personDao = personDao;
 	}
 
 	public void run() {
-		// inject stuff
-		PersonDao personDao = injector.getInstance(PersonDao.class);
-
 		// persist another person
 		Person p = new Person();
 		p.setName("Person X");
