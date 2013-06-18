@@ -3,9 +3,10 @@ package com.github.pires.example.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
 
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
@@ -33,11 +34,7 @@ public abstract class AbstractDao<T> {
 	 * @return the meta-model of a certain entity.
 	 */
 	protected EntityType<T> getMetaModel() {
-		CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(
-		    entityClass);
-		Metamodel m = getEntityManager().getMetamodel();
-
-		return m.entity(entityClass);
+		return getEntityManager().getMetamodel().entity(entityClass);
 	}
 
 	@Transactional
@@ -68,16 +65,16 @@ public abstract class AbstractDao<T> {
 	}
 
 	public List<T> findAll() {
-		CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(
-		    entityClass);
+		CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder()
+		        .createQuery(entityClass);
 		cq.select(cq.from(entityClass));
 
 		return getEntityManager().createQuery(cq).getResultList();
 	}
 
 	public List<T> findRange(int[] range) {
-		CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(
-		    entityClass);
+		CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder()
+		        .createQuery(entityClass);
 		cq.select(cq.from(entityClass));
 
 		javax.persistence.Query q = getEntityManager().createQuery(cq);
@@ -88,14 +85,13 @@ public abstract class AbstractDao<T> {
 	}
 
 	public int count() {
-		CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery(
-		    entityClass);
-		javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-		cq.select(getEntityManager().getCriteriaBuilder().count(rt));
+		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		Root<T> root = cq.from(entityClass);
+		cq.select(cb.count(root));
+		Long count = getEntityManager().createQuery(cq).getSingleResult();
 
-		javax.persistence.Query q = getEntityManager().createQuery(cq);
-
-		return ((Long) q.getSingleResult()).intValue();
+		return count.intValue();
 	}
 
 }
